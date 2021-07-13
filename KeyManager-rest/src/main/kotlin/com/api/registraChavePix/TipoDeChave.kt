@@ -1,6 +1,6 @@
 package com.api.registraChavePix
 
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator
 
 enum class TipoDeChave {
