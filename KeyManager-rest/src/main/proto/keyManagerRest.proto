@@ -6,15 +6,131 @@ option java_outer_classname = "KeyManagerRest";
 option objc_class_prefix = "HLW";
 
 package com.api;
-
-service KeyManagerRestService {
-  rpc send (KeyManagerRestRequest) returns (KeyManagerRestReply) {}
+import "google/protobuf/timestamp.proto";
+/*
+* Registra chave
+*/
+service KeyManagerGrpcService {
+  rpc cadastraPixKey (KeyManagerGrpcRequest) returns (KeyManagerGrpcResponse) {}
 }
 
-message KeyManagerRestRequest {
-  string name = 1;
+/*
+* Remove chave
+*/
+service RemovePixKeyService {
+  rpc excluiPixKey (PixKeyChaveRequest) returns (ExcluiPixKeyResponse) {}
 }
 
-message KeyManagerRestReply {
+/*
+* Consulta dados da chave
+*/
+service KeymanagerCarregaGrpcService {
+
+  rpc carrega(CarregaChavePixRequest) returns (CarregaChavePixResponse) {}
+
+}
+
+/*
+* Lista chavePix por clienteId
+*/
+service KeymanagerListaGrpcService {
+
+  rpc listaChaves(ListaChavesPixRequest) returns (ListaChavesPixResponse) {}
+
+}
+
+enum TipoChave {
+  UNKNOW_CHAVE = 0;
+  CPF = 1;
+  CELULAR = 2;
+  EMAIL = 3;
+  ALEATORIA = 4;
+}
+
+enum TipoConta {
+  UNKNOW_CONTA = 0;
+  CONTA_CORRENTE = 1;
+  CONTA_POUPANCA = 2;
+}
+
+message KeyManagerGrpcRequest {
+  string idCliente = 1;
+  TipoChave tipodechave = 2;
+  string chave = 3;
+  TipoConta tipodeconta = 4;
+}
+
+message KeyManagerGrpcResponse {
+  string idCliente = 1;
+  string pixId = 2;
+}
+
+message PixKeyChaveRequest {
+  string idCliente = 1;
+  string pixId = 2;
+}
+
+message ExcluiPixKeyResponse{
   string message = 1;
+}
+
+/**
+ * Carrega chave
+ */
+message CarregaChavePixRequest {
+  message FiltroPorPixId {
+    string clienteId = 1;
+    string pixId     = 2;
+  }
+
+  oneof filtro {
+    FiltroPorPixId pixId  = 1;
+    string chave          = 2;
+  }
+}
+
+
+message CarregaChavePixResponse {
+
+  message ChavePix {
+
+    message ContaInfo {
+      TipoConta tipo     = 1;
+      string instituicao   = 2; /** ITAU UNIBANCO */
+      string nomeDoTitular = 3;
+      string cpfDoTitular  = 4;
+      string agencia       = 5;
+      string numeroDaConta = 6;
+    }
+
+    TipoChave tipo        = 1;
+    string chave            = 2;
+    ContaInfo conta         = 3;
+    google.protobuf.Timestamp criadaEm = 4;
+  }
+
+  string clienteId = 1;
+  string pixId     = 2;
+  ChavePix chavePix   = 3;
+}
+
+/**
+ * Lista chaves
+ */
+message ListaChavesPixRequest {
+  string clienteId = 1;
+}
+
+message ListaChavesPixResponse {
+
+  message ChavePix {
+    string pixId            = 1;
+    TipoChave tipoChave     = 2;
+    string chave            = 3;
+    TipoConta tipoConta     = 4;
+    google.protobuf.Timestamp criadaEm = 5;
+  }
+
+  string clienteId         = 1;
+  repeated ChavePix chaves = 2;
 }
