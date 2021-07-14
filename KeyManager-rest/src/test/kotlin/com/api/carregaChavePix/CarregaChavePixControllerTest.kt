@@ -73,7 +73,7 @@ internal class CarregaChavePixControllerTest{
         val response = assertThrows<HttpClientResponseException> {
             client.toBlocking().exchange(request, Any::class.java)
         }
-println("ai sim $response")
+
         assertEquals(HttpStatus.NOT_FOUND, response.status)
         assertEquals(response.message,"A chave não existe" )
 
