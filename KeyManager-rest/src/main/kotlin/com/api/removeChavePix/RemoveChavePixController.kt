@@ -10,13 +10,11 @@ import io.micronaut.http.annotation.Delete
 import io.micronaut.validation.Validated
 import org.slf4j.LoggerFactory
 import java.util.*
-import javax.inject.Inject
-import javax.validation.Valid
 
 @Validated
 @Controller("/api/v1/clientes/{clienteId}")
 class RemoveChavePixController(
-    @Inject val grpcClient: RemovePixKeyServiceGrpc.RemovePixKeyServiceBlockingStub
+    private val grpcClient: RemovePixKeyServiceGrpc.RemovePixKeyServiceBlockingStub
 
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)

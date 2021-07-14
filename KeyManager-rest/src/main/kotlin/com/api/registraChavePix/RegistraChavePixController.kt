@@ -1,6 +1,5 @@
 package com.api.registraChavePix
 
-import com.api.KeyManagerGrpcRequest
 import com.api.KeyManagerGrpcServiceGrpc
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
@@ -16,7 +15,7 @@ import javax.validation.Valid
 @Validated
 @Controller("/api/v1/clientes/{clienteId}")
 class RegistraChavePixController(
-    @Inject val grpcClient: KeyManagerGrpcServiceGrpc.KeyManagerGrpcServiceBlockingStub
+    private val grpcClient: KeyManagerGrpcServiceGrpc.KeyManagerGrpcServiceBlockingStub
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
