@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @Controller("/api/v1/clientes/{clienteId}")
 class CarregaChavePixController(
-   @Inject val carregaGrpc: CarregaPixKeyServiceGrpc.CarregaPixKeyServiceBlockingStub
+   private val carregaGrpc: CarregaPixKeyServiceGrpc.CarregaPixKeyServiceBlockingStub
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 

@@ -33,9 +33,9 @@ service CarregaPixKeyService {
 /*
 * Lista chavePix por clienteId
 */
-service ListaPixKeyGrpcService {
+service ListaPixKeyService {
 
-  rpc listaChaves(ListaChavesPixRequest) returns (ListaChavesPixResponse) {}
+  rpc listar(ListaChavesPixRequest) returns (ListaChavesPixResponse) {}
 
 }
 
