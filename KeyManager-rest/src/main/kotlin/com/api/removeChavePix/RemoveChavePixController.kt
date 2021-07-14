@@ -22,7 +22,7 @@ class RemoveChavePixController(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Delete("/pix/{pixId}")
-    fun removeChavePix(clienteId:UUID, pixId: UUID): HttpResponse<Any>? {
+    fun removeChavePix(clienteId: UUID, pixId: UUID): MutableHttpResponse<Any>? {
         logger.info("Iniciando requisicao de deletar chavePix: $pixId, $clienteId")
 
         grpcClient.excluiPixKey(
@@ -32,6 +32,6 @@ class RemoveChavePixController(
                 .build()
         )
 
-        return HttpResponse.ok("Chave deletada com sucesso")
+        return HttpResponse.ok()
     }
 }
