@@ -1,6 +1,7 @@
 package com.api.registraChavePix
 
 import com.api.KeyManagerGrpcServiceGrpc
+import io.grpc.Status
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
@@ -13,7 +14,7 @@ import javax.inject.Inject
 import javax.validation.Valid
 
 @Validated
-@Controller("/api/v1/clientes/{clienteId}")
+@Controller("/api/v1/clienteS/{clienteId}")
 class RegistraChavePixController(
     private val grpcClient: KeyManagerGrpcServiceGrpc.KeyManagerGrpcServiceBlockingStub
 ) {
