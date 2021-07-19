@@ -22,16 +22,23 @@ class GlobalExceptionHandler : ExceptionHandler<StatusRuntimeException, HttpResp
         val statusDescription = exception.status.description ?: ""
         when (statusCode) {
             Status.INVALID_ARGUMENT.code -> {
-                val details = status?.detailsList?.get(0)?.unpack(BadRequest::class.java)
+                val details = if (status?.detailsList?.isEmpty() == true) {
+                    return HttpResponse.badRequest("Dados da requisição estão inválidos")
+                } else {
+                    status?.detailsList?.get(0)?.unpack(BadRequest::class.java)
+                }
                 val body = details?.fieldViolationsList?.stream()!!.map {
-                    ListaDetalhes(Status.INVALID_ARGUMENT,status.message,it.field, it.description)
+                    ListaDetalhes(Status.INVALID_ARGUMENT, status!!.message, it.field, it.description)
                 }.collect(Collectors.toList())
                 return HttpResponse.badRequest(body)
             }
             Status.FAILED_PRECONDITION.code -> return HttpResponse.unprocessableEntity()
             Status.NOT_FOUND.code -> return HttpResponse.notFound(statusDescription)
-            Status.ALREADY_EXISTS.code -> return HttpResponse.status(HttpStatus.CONFLICT)
-            else ->  {
+            Status.ALREADY_EXISTS.code -> return HttpResponse.status(
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                "Chave ja existente"
+            )
+            else -> {
                 logger.error("Erro inesperado '${exception.javaClass.name}' ao processar requisição", exception)
                 return HttpResponse.serverError("Nao foi possivel completar a requisição devido ao erro: ${statusDescription} (${statusCode})")
             }

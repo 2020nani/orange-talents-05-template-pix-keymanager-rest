@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.validation.Valid
 
 @Validated
-@Controller("/api/v1/clienteS/{clienteId}")
+@Controller("/api/v1/clientes/{clienteId}")
 class RegistraChavePixController(
     private val grpcClient: KeyManagerGrpcServiceGrpc.KeyManagerGrpcServiceBlockingStub
 ) {

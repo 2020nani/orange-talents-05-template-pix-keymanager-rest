@@ -27,13 +27,13 @@ internal class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, resposta.status)
         assertNotNull(resposta.body())
-        assertEquals(mensagem, (resposta.body() as JsonError).message)
+        assertEquals(mensagem, resposta.body())
     }
 
     @Test
     internal fun `deve retornar 422 quando statusException for already existis`() {
 
-        val mensagem = "chave ja existente"
+        val mensagem = "Chave ja existente"
         val alreadyExistsException = StatusRuntimeException(
             Status.ALREADY_EXISTS
                 .withDescription(mensagem)
@@ -42,8 +42,8 @@ internal class GlobalExceptionHandlerTest {
         val resposta = GlobalExceptionHandler().handle(requestGenerica, alreadyExistsException)
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, resposta.status)
-        assertNotNull(resposta.body())
-        assertEquals(mensagem, (resposta.body() as JsonError).message)
+        assertNotNull(resposta.reason())
+        assertEquals(mensagem, resposta.reason())
     }
 
     @Test
@@ -56,7 +56,7 @@ internal class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, resposta.status)
         assertNotNull(resposta.body())
-        assertEquals(mensagem, (resposta.body() as JsonError).message)
+        assertEquals(mensagem, resposta.body())
     }
 
     @Test
@@ -68,6 +68,6 @@ internal class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, resposta.status)
         assertNotNull(resposta.body())
-        assertTrue((resposta.body() as JsonError).message.contains("INTERNAL"))
+        assertEquals("Nao foi possivel completar a requisição devido ao erro:  (INTERNAL)",resposta.body())
     }
 }
